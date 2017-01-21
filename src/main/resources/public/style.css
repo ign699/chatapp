@@ -33,7 +33,7 @@ li {
     margin: 0 0 5px 0
 }
 
-#userlist {
+#userlist, #roomlist {
     position: fixed;
     left: 50%;
     list-style: none;
@@ -43,7 +43,9 @@ li {
     width: 150px;
     top: 11px;
 }
-
+#roomlist{
+    cursor: pointer;
+}
 #chat p {
     margin: 5px 0;
     font-weight: 300

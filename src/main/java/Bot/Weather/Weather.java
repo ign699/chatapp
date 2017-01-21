@@ -1,4 +1,4 @@
-package Weather;
+package Bot.Weather;
 
 /**
  * Created by Jan on 10.01.2017.

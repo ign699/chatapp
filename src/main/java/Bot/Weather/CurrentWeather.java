@@ -1,12 +1,9 @@
-package Weather;
+package Bot.Weather;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**

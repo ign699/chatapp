@@ -1,6 +1,6 @@
 package Bot;
 
-import Weather.CurrentWeather;
+import Bot.Weather.CurrentWeather;
 import org.joda.time.DateTime;
 
 /**
