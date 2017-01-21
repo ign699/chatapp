@@ -23,16 +23,28 @@ webSocket.onclose = function () {
 };
 
 webSocket.onopen = function () {
-    var nickname = prompt("Name","Your name");
-    sendMessage({
-        type:"nickname",
-        text:nickname
-    })
+    if(document.cookie === "") {
+        var nickname = prompt("Name", "Your name");
+        document.cookie = nickname;
+        sendMessage({
+            type: "nickname",
+            text: nickname
+        })
+    }
+    else{
+        sendMessage({
+            type:"nickname",
+            text: document.cookie
+        })
+    }
 
 };
 
 id("send").addEventListener("click", function(){
-    sendMessage(id("message").value);
+    sendMessage({
+        type:"message",
+        text:id("message").value
+    });
 });
 
 id("message").addEventListener("keypress", function(e){
@@ -46,15 +58,25 @@ id("room").addEventListener("click", function (e) {
     sendMessage({
         type:"room",
         text:id("message").value
-    })
+    });
     showChat();
 });
 function showChat() {
+    id("message").placeholder="Type your message";
     document.getElementById("send").style.display="block";
     document.getElementById("userlist").style.display="block";
     document.getElementById("room").style.display="none";
     document.getElementById("roomlist").style.display="none";
     document.getElementById("leave").style.display="block";
+}
+function showRooms() {
+    id("message").placeholder="Room name";
+    id("chat").innerHTML="";
+    document.getElementById("send").style.display="none";
+    document.getElementById("userlist").style.display="none";
+    document.getElementById("room").style.display="block";
+    document.getElementById("roomlist").style.display="block";
+    document.getElementById("leave").style.display="none";
 }
 id("roomlist").addEventListener('click', function (e) {
     if(e.target.nodeName==="LI"){
@@ -65,6 +87,15 @@ id("roomlist").addEventListener('click', function (e) {
     }
     showChat();
 });
+
+id("leave").addEventListener('click', function (e) {
+    sendMessage({
+        type:"leave",
+        text:""
+    })
+    showRooms();
+});
+
 function sendMessage(message) {
     if(message !== ""){
         webSocket.send(JSON.stringify(message));
@@ -72,6 +103,7 @@ function sendMessage(message) {
     }
 }
 function displayRoomList(data) {
+    id("roomlist").innerHTML="";
     data.roomlist.forEach(function(room){
         insert("roomlist", "<li>" + room + "</li>");
     });

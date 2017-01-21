@@ -30,6 +30,7 @@ public class ChatWebSocketHandler {
     @OnWebSocketMessage
     public void onMessage(Session user, String incomingData){
         Gson gson = new Gson();
+        System.out.println(incomingData);
         Message message = gson.fromJson(incomingData, Message.class);
         MessageHandler messageHandler = new MessageHandler(message, user);
         messageHandler.handleMessage();

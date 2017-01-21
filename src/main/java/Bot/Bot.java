@@ -9,18 +9,34 @@ import org.joda.time.DateTime;
 public class Bot {
     private CurrentWeather currentWeather = new CurrentWeather(50.06, 19.94);
 
+    public String askQuestion(String question){
+        String answer = "";
+        switch (question){
+            case "!weather":
+                answer = sayWeather();
+                break;
+            case "!day":
+                answer = sayDay();
+                break;
+            case "!hour":
+                answer = sayHour();
+                break;
+            default:
+                answer = "Only valid questions are !weather, !day, !hour";
+        }
+        return answer;
+    }
 
-
-    public String sayWeather(){
+    private String sayWeather(){
         return currentWeather.getCurrentWeather();
     }
 
-    public String sayHour(){
+    private String sayHour(){
         DateTime date = new DateTime();
         return date.toLocalTime().toString().substring(0,5);
     }
 
-    public String sayDay(){
+    private String sayDay(){
         DateTime date = new DateTime();
         return date.dayOfWeek().getAsText();
     }

@@ -25,7 +25,7 @@ public class Chat {
 
     public static void main(String[] args) {
         staticFileLocation("/public");
-        roomList.add("Bot");
+        roomList.add("chatbot");
         webSocket("/chat", ChatWebSocketHandler.class);
         init();
     }
@@ -51,8 +51,10 @@ public class Chat {
         LinkedList<String> users = new LinkedList<>();
         userUsernameMap.keySet().forEach(
                 user -> {
-                    if(userRoomMap.get(user).equals(room)){
-                        users.add(userUsernameMap.get(user));
+                    if (userRoomMap.containsKey(user)) {
+                        if (userRoomMap.get(user).equals(room)) {
+                            users.add(userUsernameMap.get(user));
+                        }
                     }
                 }
         );
