@@ -7,7 +7,8 @@ var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port 
 document.getElementById("send").style.display="none";
 document.getElementById("userlist").style.display="none";
 document.getElementById("leave").style.display="none";
-
+var nicknames = [];
+var nickname;
 webSocket.onmessage = function (msg) {
     var data = JSON.parse(msg.data);
     if(data.type==="roomlist"){
@@ -16,6 +17,10 @@ webSocket.onmessage = function (msg) {
     if(data.type==="message"){
         updateChat(data);
     }
+    if(data.type==="userlist"){
+        nicknames = data.userlist;
+        sendNickname();
+    }
 };
 
 webSocket.onclose = function () {
@@ -23,23 +28,44 @@ webSocket.onclose = function () {
 };
 
 webSocket.onopen = function () {
+    sendMessage({
+        type:"getnames",
+        text:""
+    });
+};
+
+
+function checkIfAvalible(nickname){
+    for(var i = 0; i < nicknames.length; i++){
+        if(nicknames[i] === nickname){
+            return false;
+        }
+    }
+    return true;
+}
+function getNickname() {
     if(document.cookie === "") {
-        var nickname = prompt("Name", "Your name");
-        document.cookie = nickname;
+        return prompt("Name", "Your name");
+    }
+    else{
+        return document.cookie;
+    }
+}
+
+function sendNickname(){
+    nickname = getNickname();
+    if(checkIfAvalible(nickname)){
+        document.cookie=nickname;
         sendMessage({
-            type: "nickname",
-            text: nickname
+            type:"nickname",
+            text:nickname
         })
     }
     else{
-        sendMessage({
-            type:"nickname",
-            text: document.cookie
-        })
+        document.cookie="";
+        sendNickname();
     }
-
-};
-
+}
 id("send").addEventListener("click", function(){
     sendMessage({
         type:"message",
@@ -48,11 +74,22 @@ id("send").addEventListener("click", function(){
 });
 
 id("message").addEventListener("keypress", function(e){
-    if (e.keyCode === 13){sendMessage({
+    if (e.keyCode === 13){
+        if(document.getElementById("send").style.display==="none"){
+            sendMessage({
+                type:"room",
+                text:e.target.value
+            });
+            showChat()
+        }
+        else{
+        sendMessage({
         type:"message",
         text:e.target.value
-    });}
+        });}
+    }
 });
+
 
 id("room").addEventListener("click", function (e) {
     sendMessage({

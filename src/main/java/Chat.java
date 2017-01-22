@@ -35,12 +35,14 @@ public class Chat {
         LinkedList<String> users = createRoomUsersList(room);
         userUsernameMap.keySet().stream().filter(Session::isOpen).forEach(session ->{
             try{
-                if(userRoomMap.get(session).equals(room)) {
-                    session.getRemote().sendString(String.valueOf(new JSONObject()
-                            .put("type", "message")
-                            .put("userMessage", createHtmlMessageFromSender(sender, message))
-                            .put("userlist", users))
-                    );
+                if (userRoomMap.containsKey(session)) {
+                    if (userRoomMap.get(session).equals(room)) {
+                        session.getRemote().sendString(String.valueOf(new JSONObject()
+                                .put("type", "message")
+                                .put("userMessage", createHtmlMessageFromSender(sender, message))
+                                .put("userlist", users))
+                        );
+                    }
                 }
             } catch (Exception e){
                 e.printStackTrace();

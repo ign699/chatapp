@@ -46,6 +46,10 @@ li {
 #roomlist{
     cursor: pointer;
 }
+#chat {
+    height: 400px;
+    overflow: auto;
+}
 #chat p {
     margin: 5px 0;
     font-weight: 300
