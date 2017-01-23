@@ -13,8 +13,7 @@ import org.json.JSONObject;
 @WebSocket
 public class ChatWebSocketHandler {
 
-    private String sender, msg;
-    private Bot bot = new Bot();
+    private MessageHandler messageHandler = new MessageHandler();
 
     @OnWebSocketConnect
     public void onConnect(Session user) throws Exception{
@@ -26,20 +25,14 @@ public class ChatWebSocketHandler {
         Message message = new Message();
         message.setText("");
         message.setType("onclose");
-        MessageHandler messageHandler= new MessageHandler(message, user);
-        messageHandler.actOnMessage();
+        messageHandler.actOnMessage(message, user);
     }
 
     @OnWebSocketMessage
     public void onMessage(Session user, String incomingData){
         System.out.println(incomingData);
-
         Message message = MessageGenerator.generateMessage(incomingData);
-
-        MessageHandler messageHandler = new MessageHandler(message, user);
-
-        messageHandler.actOnMessage();
-
+        messageHandler.actOnMessage(message, user);
     }
 
 }

@@ -45,7 +45,14 @@ function checkIfAvalible(nickname){
 }
 function getNickname() {
     if(document.cookie === "") {
-        return prompt("Name", "Your name");
+        var nickname = prompt("Name", "Your name");
+        if(nickname!==null){
+            document.cookie=nickname;
+            return nickname;
+        }
+        else{
+            webSocket.close();
+        }
     }
     else{
         return document.cookie;
@@ -55,7 +62,6 @@ function getNickname() {
 function sendNickname(){
     nickname = getNickname();
     if(checkIfAvalible(nickname)){
-        document.cookie=nickname;
         sendMessage({
             type:"nickname",
             text:nickname
