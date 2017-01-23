@@ -23,11 +23,11 @@ public class ChatWebSocketHandler {
 
     @OnWebSocketClose
     public void onClose(Session user, int statusCode, String reason){
-        String name = Chat.getNickName(user);
-        String room = Chat.getRoom(user);
-        Chat.userUsernameMap.remove(user);
-        Chat.userRoomMap.remove(user);
-        Chat.broadcastMessage("Server", name + " left the chat", room);
+        Message message = new Message();
+        message.setText("");
+        message.setType("onclose");
+        MessageHandler messageHandler= new MessageHandler(message, user);
+        messageHandler.actOnMessage();
     }
 
     @OnWebSocketMessage

@@ -36,7 +36,8 @@ public class CurrentWeather {
                     "Temperatur: " + weather.getMain().getTemp() + " stopni Celsjusza " +
                     "Ciśnienie: " + weather.getMain().getPressure() + "hPa " +
                     "Wilgotność: " + weather.getMain().getHumidity() + "% " +
-                    "Prędkość wiatru: " + weather.getWind().getSpeed() + "km/h";
+                    "Prędkość wiatru: " + weather.getWind().getSpeed() + "km/h " +
+                    "Wszelakie limity smogowe przekroczone 10000 krotnie.";
         } catch (Exception e){
             e.printStackTrace();
         }
