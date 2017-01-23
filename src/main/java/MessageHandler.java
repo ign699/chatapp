@@ -59,7 +59,6 @@ public class MessageHandler {
         String room = chat.getRoom(session);
         chat.serverSaysUserLeft(session);
         chat.removeUser(session);
-        chat.removeUserFromRoom(session);
     }
 
     private void handleNameList(Message message, Session session){
