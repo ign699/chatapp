@@ -56,13 +56,23 @@ public class Chat {
         String message = getNickName(user) + " left the room.";
         String room = getRoom(user);
         removeUserFromRoom(user);
+        removeUser(user);
         sendMessage(sender, message, room);
     }
 
-    public void serverSaysUserJoined(Session user){
+    public void serverSaysUserLeftRoom(Session user){
+        String sender = "Server";
+        String message = getNickName(user) + " left the room.";
+        String room = getRoom(user);
+        removeUserFromRoom(user);
+        sendMessage(sender, message, room);
+        sendRoomList(user, getNickName(user));
+    }
+
+    public void serverSaysUserJoined(Session user, String room){
         String sender = "Server";
         String message = getNickName(user) + " joined the room.";
-        String room = getRoom(user);
+        addUserToRoom(user, room);
         sendMessage(sender, message, room);
     }
     public void botAnswer(Session user, String question){
@@ -93,7 +103,8 @@ public class Chat {
         return users;
     }
 
-    public void sendRoomList(Session session){
+    public void sendRoomList(Session session, String name){
+        addUserNickname(session, name);
         try{
             session.getRemote().sendString(String.valueOf(new JSONObject()
                     .put("type", "roomlist")
@@ -119,7 +130,7 @@ public class Chat {
         return userRoomMap.get(user);
     }
 
-    public String getNickName(Session user){
+    private String getNickName(Session user){
         return userUsernameMap.get(user);
     }
 
@@ -127,18 +138,18 @@ public class Chat {
         userUsernameMap.remove(user);
     }
 
-    public void removeUserFromRoom(Session user){
+    private void removeUserFromRoom(Session user){
         userRoomMap.remove(user);
     }
 
-    public void addRoom(String room){
+    private void addRoom(String room){
         roomList.add(room);
     }
 
-    public void addUserNickname(Session user, String nickname){
+    void addUserNickname(Session user, String nickname){
         userUsernameMap.put(user, nickname);
     }
-    public void addUserToRoom(Session user, String room){
+    private void addUserToRoom(Session user, String room){
         userRoomMap.put(user, room);
         if(!roomList.contains(room)){
             addRoom(room);

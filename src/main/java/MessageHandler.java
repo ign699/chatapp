@@ -50,15 +50,11 @@ public class MessageHandler {
     }
 
     private void handleNickname(Message message, Session session){
-        chat.addUserNickname(session, message.getText());
-        chat.sendRoomList(session);
+        chat.sendRoomList(session, message.getText());
     }
 
     private void handleOnClose(Message message, Session session){
-        String name = chat.getNickName(session);
-        String room = chat.getRoom(session);
         chat.serverSaysUserLeft(session);
-        chat.removeUser(session);
     }
 
     private void handleNameList(Message message, Session session){
@@ -66,8 +62,7 @@ public class MessageHandler {
     }
 
     private void handleRoom(Message message, Session session){
-        chat.addUserToRoom(session, message.getText());
-        chat.serverSaysUserJoined(session);
+        chat.serverSaysUserJoined(session, message.getText());
     }
 
     private void handleMessage(Message message, Session session){
@@ -78,8 +73,7 @@ public class MessageHandler {
     }
 
     private void handleLeave(Message message, Session session){
-        chat.serverSaysUserLeft(session);
-        chat.sendRoomList(session);
+        chat.serverSaysUserLeftRoom(session);
     }
 
 }
